@@ -21,6 +21,9 @@ from django.views.generic import RedirectView
 urlpatterns = [
     path('admin/', admin.site.urls),
 
+    # Authentication URLs (login, logout, password reset, etc.)
+    path('accounts/', include('django.contrib.auth.urls')),
+
     # Include all URLs from tasks app
     path('tasks/', include('tasks.urls')),
 

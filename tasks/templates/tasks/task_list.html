@@ -1,0 +1,82 @@
+{% extends 'tasks/base.html' %}
+{% comment %} 
+ - Inherits from base.htnml
+ - Gets all the <html>, <head>, <nav>, etc.
+{% endcomment %}
+
+{% block title %}My Tasks{% endblock %}
+{% comment %} 
+ - Overrides the title block
+ - Browser tab will show "My Tasks" instead of "Todo List App" 
+{% endcomment %}
+
+{% block content %}
+<div>
+    
+    <h1>My Tasks</h1>
+
+    <!-- Task Summary -->
+    <div>
+        <p><strong>Total:</strong> {{ tasks.count }}</p>
+        <p><strong>Completed:</strong> {{ completed_count }}</p>
+        <p><strong>Pending:</strong> {{ pending_count }}</p>
+    </div>
+    {% comment %} tasks come from context in views.py {% endcomment %}
+
+    <!-- Create New Task Button -->
+    <a href="{% url 'tasks:task_create' %}">+ Add New Task</a>
+
+    <hr>
+
+    <!-- Task List -->
+    {% if tasks %}
+        <ul>
+            {% for task in tasks %}
+                <li>
+                    <div>
+                        <!-- Task Checkbox (Toggle Completion) -->
+                        <form method="post" action="{% url 'tasks:task_toggle' task.pk %}" style="display:inline;">
+                            {% csrf_token %}
+                            {% comment %} 
+                             - CSRF protection - Django security feature
+                             - Requiresd for all POST forms
+                             - Prevents Cross-Site Request Forery attacks
+                             - Djang automatically validates this token
+                            {% endcomment %}
+                            
+                            <input
+                                type="checkbox"
+                                {% if task.completed %}checked{% endif %}
+                                onchange="this.form.submit()"
+                            >
+                        </form>
+
+                        <!-- Task Title (strikethrough if completed) -->
+                        <strong style="{% if task.completed %}text-decoration: line-through;{% endif %}">
+                            {{ task.title }}
+                        </strong>
+
+                        <!-- Task Description -->
+                        {% if task.description %}
+                            <p>{{ task.description }}</p>
+                        {% endif %}
+
+                        <!-- Task Meta Info -->
+                        <small>
+                            Created: {{ task.created_at|date:"M d, Y" }} at {{ task.created_at|time:"H:i" }}
+                        </small>
+
+                        <!-- Action Buttons -->
+                        <div>
+                            <a href="{% url 'tasks:task_update' task.pk %}">Edit</a>
+                            <a href="{% url 'tasks:task_delete' task.pk %}">Delete</a>
+                        </div>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No tasks yet. Create your first task!</p>
+    {% endif %}
+</div>
+{% endblock %}

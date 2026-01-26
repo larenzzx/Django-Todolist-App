@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Todo List App{% endblock %}</title>
+    {% comment %} {% block title %} - Creates a 'slot' that child templates can override {% endcomment %}
+    {% comment %} Default value: 'Todo List App' {% endcomment %}
+    {% comment %} Child can override: {% block title %}Edit Task{% endblock %} {% endcomment %}
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav>
+        <div>
+            <h2>📝 Todo List</h2>
+            {% if user.is_authenticated %}
+                <p>
+                    Welcome, {{ user.username }}! |
+                    <form method="post" action="{% url 'logout' %}" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit" style="background: none; border: none; color: blue; text-decoration: underline; cursor: pointer; padding: 0; font: inherit;">
+                            Logout
+                        </button>
+                    </form>
+                </p>
+            {% else %}
+                <a href="{% url 'login' %}">Login</a>
+            {% endif %}
+            {% comment %} {{ user.name }} - Template variable (displays data) {% endcomment %}
+            {% comment %} {% if %} - Template tag (logic) {% endcomment %}
+            {% comment %} {% url 'login' %} - Generates URL from name (reverse URL lookup) {% endcomment %}
+            {% comment %} user is automatically available in templates (from context processors) {% endcomment %}
+
+        </div>
+    </nav>
+
+    <!-- Django Messages (success, error, info, warning) -->
+    {% if messages %}
+        <div>
+            {% for message in messages %}
+                <div class="alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+    {% comment %} 
+     - Displays Django messages from your views
+     - Remember: messages.success(request, 'Task Created!') in views.py
+     - message.tags = "success", "error", "warning", "info"
+
+    {% endcomment %}
+    
+
+    <!-- Main Content Area (filled by child templates) -->
+    <main>
+        {% block content %}
+        <!-- Child templates will fill this block -->
+        {% endblock %}
+    </main>
+    {% comment %} 
+     - The main content Area
+     - Every child template will put their unique content here
+    
+    {% endcomment %}
+
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 Todo List App | Built with Django</p>
+    </footer>
+</body>
+</html>

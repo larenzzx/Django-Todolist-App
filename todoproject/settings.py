@@ -116,3 +116,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+
+# Authentication Settings
+# Where to redirect after successful login
+LOGIN_REDIRECT_URL = '/tasks/'
+
+# Where to redirect after logout
+LOGOUT_REDIRECT_URL = '/accounts/login/'
+
+# Where to redirect if user tries to access @login_required view
+LOGIN_URL = '/accounts/login/'
