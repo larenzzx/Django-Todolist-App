@@ -1,5 +1,5 @@
-from django.db import models
-from django.contrib.auth.models import User
+from django.db import models # Django's model system
+from django.contrib.auth.models import User # Built-in User model
 
 # Create your models here.
 

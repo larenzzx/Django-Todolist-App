@@ -3,6 +3,10 @@ from .models import Task
 
 # Register your models here.
 
+# this is the simple version. no filtering just display the model
+# admin.site.register(Task)
+
+# this way is to customize the look on the admin portal. it will include filterings
 @admin.register(Task)
 class TaskAdmin(admin.ModelAdmin):
     # Columns to display in the admin list view
