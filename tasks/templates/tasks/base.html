@@ -1,5 +1,10 @@
+{% load static %}
+{% comment %} 
+ - Django template tag - Loads the static files system
+ - Must be at the top of any template using static files
+{% endcomment %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,24 +12,37 @@
     {% comment %} {% block title %} - Creates a 'slot' that child templates can override {% endcomment %}
     {% comment %} Default value: 'Todo List App' {% endcomment %}
     {% comment %} Child can override: {% block title %}Edit Task{% endblock %} {% endcomment %}
+
+    <!-- Tailwind CSS + DaisyUI (compiled) -->
+    <link rel="stylesheet" href="{% static 'css/output.css' %}">
 </head>
-<body>
+<body class="min-h-screen bg-base-200">
     <!-- Navigation Bar -->
-    <nav>
-        <div>
-            <h2>📝 Todo List</h2>
+    <nav class="navbar bg-base-100 shadow-lg">
+        <div class="flex-1">
+            <a href="{% url 'tasks:task_list' %}" class="btn btn-ghost text-xl">
+                📝 Todo List
+            </a>
+        </div>
+        <div class="flex-none gap-2">
             {% if user.is_authenticated %}
-                <p>
-                    Welcome, {{ user.username }}! |
-                    <form method="post" action="{% url 'logout' %}" style="display: inline;">
-                        {% csrf_token %}
-                        <button type="submit" style="background: none; border: none; color: blue; text-decoration: underline; cursor: pointer; padding: 0; font: inherit;">
-                            Logout
-                        </button>
-                    </form>
-                </p>
+                <div class="dropdown dropdown-end">
+                    <div tabindex="0" role="button" class="btn btn-ghost">
+                        Welcome, <span class="font-bold">{{ user.username }}</span>
+                    </div>
+                    <ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
+                        <li>
+                            <form method="post" action="{% url 'logout' %}">
+                                {% csrf_token %}
+                                <button type="submit" class="w-full text-left">
+                                    Logout
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
             {% else %}
-                <a href="{% url 'login' %}">Login</a>
+                <a href="{% url 'login' %}" class="btn btn-primary">Login</a>
             {% endif %}
             {% comment %} {{ user.name }} - Template variable (displays data) {% endcomment %}
             {% comment %} {% if %} - Template tag (logic) {% endcomment %}
@@ -34,12 +52,15 @@
         </div>
     </nav>
 
-    <!-- Django Messages (success, error, info, warning) -->
+    <!-- Django Messages -->
     {% if messages %}
-        <div>
+        <div class="container mx-auto px-4 pt-4">
             {% for message in messages %}
-                <div class="alert-{{ message.tags }}">
-                    {{ message }}
+                <div role="alert" class="alert {% if message.tags == 'error' %}alert-error{% elif message.tags == 'success' %}alert-success{% elif message.tags == 'warning' %}alert-warning{% else %}alert-info{% endif %} mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span>{{ message }}</span>
                 </div>
             {% endfor %}
         </div>
@@ -52,8 +73,8 @@
     {% endcomment %}
     
 
-    <!-- Main Content Area (filled by child templates) -->
-    <main>
+    <!-- Main Content Area -->
+    <main class="container mx-auto px-4 py-8">
         {% block content %}
         <!-- Child templates will fill this block -->
         {% endblock %}
@@ -66,8 +87,10 @@
 
 
     <!-- Footer -->
-    <footer>
-        <p>&copy; 2026 Todo List App | Built with Django</p>
+    <footer class="footer footer-center bg-base-300 text-base-content p-4 mt-8">
+        <aside>
+            <p>&copy; 2026 Todo List App | Built with Django + Tailwind CSS + DaisyUI</p>
+        </aside>
     </footer>
 </body>
 </html>

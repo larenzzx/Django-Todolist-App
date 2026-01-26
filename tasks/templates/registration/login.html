@@ -3,49 +3,70 @@
 {% block title %}Login{% endblock %}
 
 {% block content %}
-<div style="max-width: 400px; margin: 50px auto;">
-    <h1>Login</h1>
+<div class="max-w-md mx-auto">
+    <div class="card bg-base-100 shadow-xl">
+        <div class="card-body">
+            <h2 class="card-title text-3xl mb-6 justify-center">Welcome Back!</h2>
 
-    {% if form.errors %}
-        <div style="color: red; margin-bottom: 20px;">
-            <p>Invalid username or password. Please try again.</p>
+            {% if form.errors %}
+                <div role="alert" class="alert alert-error mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span>Invalid username or password. Please try again.</span>
+                </div>
+            {% endif %}
+
+            <form method="post" class="space-y-4">
+                {% csrf_token %}
+
+                <!-- Username Field -->
+                <div class="form-control">
+                    <label class="label" for="id_username">
+                        <span class="label-text font-semibold">Username</span>
+                    </label>
+                    <input
+                        type="text"
+                        name="username"
+                        id="id_username"
+                        required
+                        autofocus
+                        class="input input-bordered w-full"
+                        placeholder="Enter your username"
+                    >
+                </div>
+
+                <!-- Password Field -->
+                <div class="form-control">
+                    <label class="label" for="id_password">
+                        <span class="label-text font-semibold">Password</span>
+                    </label>
+                    <input
+                        type="password"
+                        name="password"
+                        id="id_password"
+                        required
+                        class="input input-bordered w-full"
+                        placeholder="Enter your password"
+                    >
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="btn btn-primary w-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+                    </svg>
+                    Login
+                </button>
+            </form>
+
+            <div class="divider">OR</div>
+
+            <div class="text-center text-sm text-base-content/70">
+                <p>Don't have an account?</p>
+                <p class="mt-2">Contact the administrator to create one.</p>
+            </div>
         </div>
-    {% endif %}
-
-    <form method="post">
-        {% csrf_token %}
-
-        <!-- Username Field -->
-        <div style="margin-bottom: 15px;">
-            <label for="id_username">Username:</label>
-            <input
-                type="text"
-                name="username"
-                id="id_username"
-                required
-                autofocus
-                style="width: 100%; padding: 8px;"
-            >
-        </div>
-
-        <!-- Password Field -->
-        <div style="margin-bottom: 15px;">
-            <label for="id_password">Password:</label>
-            <input
-                type="password"
-                name="password"
-                id="id_password"
-                required
-                style="width: 100%; padding: 8px;"
-            >
-        </div>
-
-        <!-- Submit Button -->
-        <button type="submit" style="padding: 10px 20px;">Login</button>
-    </form>
-
-    <hr style="margin: 30px 0;">
-
-    <p>Don't have an account? Contact admin or use Django admin to create a user.</p>
+    </div>
 </div>
 {% endblock %}

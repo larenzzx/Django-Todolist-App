@@ -3,41 +3,65 @@
 {% block title %}{{ action }} Task{% endblock %}
 
 {% block content %}
-<div>
-    <h1>{{ action }} Task</h1>
+<div class="max-w-2xl mx-auto">
+    <div class="card bg-base-100 shadow-xl">
+        <div class="card-body">
+            <h2 class="card-title text-3xl mb-6">{{ action }} Task</h2>
 
-    <form method="post">
-        {% csrf_token %}
+            <form method="post" class="space-y-6">
+                {% csrf_token %}
 
-        <!-- Title Field -->
-        <div>
-            <label for="title">Title: *</label>
-            <input
-                type="text"
-                id="title"
-                name="title"
-                value="{{ task.title|default:'' }}"
-                required
-                placeholder="Enter task title"
-            >
+                <!-- Title Field -->
+                <div class="form-control">
+                    <label class="label" for="title">
+                        <span class="label-text text-base font-semibold">Title *</span>
+                    </label>
+                    <input
+                        type="text"
+                        id="title"
+                        name="title"
+                        value="{{ task.title|default:'' }}"
+                        required
+                        placeholder="Enter task title"
+                        class="input input-bordered w-full"
+                    >
+                    <label class="label">
+                        <span class="label-text-alt">A clear, concise title for your task</span>
+                    </label>
+                </div>
+
+                <!-- Description Field -->
+                <div class="form-control">
+                    <label class="label" for="description">
+                        <span class="label-text text-base font-semibold">Description</span>
+                        <span class="label-text-alt">Optional</span>
+                    </label>
+                    <textarea
+                        id="description"
+                        name="description"
+                        rows="4"
+                        placeholder="Enter task description (optional)"
+                        class="textarea textarea-bordered w-full"
+                    >{{ task.description|default:'' }}</textarea>
+                    <label class="label">
+                        <span class="label-text-alt">Add any additional details about this task</span>
+                    </label>
+                </div>
+
+                <!-- Buttons -->
+                <div class="card-actions justify-end gap-3">
+                    <a href="{% url 'tasks:task_list' %}" class="btn btn-ghost">
+                        Cancel
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                        {{ action }} Task
+                    </button>
+                </div>
+            </form>
         </div>
-
-        <!-- Description Field -->
-        <div>
-            <label for="description">Description:</label>
-            <textarea
-                id="description"
-                name="description"
-                rows="4"
-                placeholder="Enter task description (optional)"
-            >{{ task.description|default:'' }}</textarea>
-        </div>
-
-        <!-- Submit Button -->
-        <button type="submit">{{ action }} Task</button>
-
-        <!-- Cancel Button -->
-        <a href="{% url 'tasks:task_list' %}">Cancel</a>
-    </form>
+    </div>
 </div>
 {% endblock %}

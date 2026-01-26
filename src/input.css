@@ -1,0 +1,7 @@
+/* Tailwind CSS v4 - Import Tailwind */
+@import "tailwindcss";
+
+/* Import DaisyUI components */
+@plugin "daisyui";
+
+/* Custom CSS can go here */
